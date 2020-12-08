@@ -10,32 +10,135 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const managerQuestions = [
+const teamMembers = [];
+const idArray = [];
 
-    {
-        type: 'input',
-        message: 'What is the name of the manager?',
-        name: 'name',
-    },
+function createManager () {
 
-    {
-        type: 'input',
-        message: 'What is the email address for the manager?',
-        name: 'email',
-    },
+    inquirer.prompt ([
 
-    {
-        type: 'input',
-        message: 'What is the Id for the manager?',
-        name: 'id',
-    },
+        {
+            type: 'input',
+            message: 'What is the name of the manager?',
+            name: 'managerName',
+        },
+    
+        {
+            type: 'input',
+            message: 'What is the id for the manager?',
+            name: 'managerId',
+        },
 
-    {
-        type: 'input',
-        message: 'What is the office number for the manager?',
-        name: 'officeNumber',
-    }
-]
+        {
+            type: 'input',
+            message: 'What is the email address for the manager?',
+            name: 'managerEmail',
+        },
+    
+        {
+            type: 'input',
+            message: 'What is the office number for the manager?',
+            name: 'managerOfficeNumber',
+        }
+    ])
+    .then((answers) => {
+        const manager = new Manager (answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
+
+        teamMembers.push(manager);
+        idArray.push(answers.managerId);
+        createTeam();
+    })
+}
+
+function addIntern () {
+
+    inquirer.prompt ([
+
+        {
+            type: 'input',
+            message: 'What is the name of the intern?',
+            name: 'internName',
+        },
+    
+        {
+            type: 'input',
+            message: 'What is the id for the intern?',
+            name: 'internId',
+        },
+
+        {
+            type: 'input',
+            message: 'What is the email address for the intern?',
+            name: 'internEmail',
+        },
+    
+        {
+            type: 'input',
+            message: 'What is the name of the school the intern attends?',
+            name: 'internSchool',
+        }
+    ])
+    .then((answers) => {
+        const intern = new Intern (answers.internName, answers.internId, answers.internEmail, answers.internSchool);
+
+        teamMembers.push(intern);
+        idArray.push(answers.internId);
+    })
+}
+
+function addEngineer () {
+
+    inquirer.prompt ([
+
+        {
+            type: 'input',
+            message: 'What is the name of the engineer?',
+            name: 'engineerName',
+        },
+    
+        {
+            type: 'input',
+            message: 'What is the id for the engineer?',
+            name: 'engineerId',
+        },
+
+        {
+            type: 'input',
+            message: 'What is the email address for the engineer?',
+            name: 'engineerEmail',
+        },
+    
+        {
+            type: 'input',
+            message: 'What is the GitHub username for the engineer?',
+            name: 'engineerGithubUsername',
+        }
+    ])
+    .then((answers) => {
+        const engineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithubUsename);
+
+        teamMembers.push(engineer);
+        idArray.push(answers.engineerId);
+    })
+}
+
+function createTeam () {
+    inquirer.prompt ([
+
+        {   type: 'list',
+            name: 'employeeType',
+            message: 'Which type of team member would you like to add?',
+            choices: [
+                'Intern',
+                'Engineer',
+                "I'm done adding team members."
+            ]
+        }
+    ])
+    .then((answer) => {
+        console.log("I'm adding the following team member: " + answer.employeeType);
+    })
+}
 
 // function to initialize program
 function init() {
@@ -46,7 +149,11 @@ function init() {
 }
 
 // function call to initialize program
-init();
+createManager();
+// addIntern();
+// addEngineer();
+
+
 
 
 // Write code to use inquirer to gather information about the development team members,
