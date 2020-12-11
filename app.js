@@ -13,6 +13,23 @@ const render = require("./lib/htmlRenderer");
 const teamMembers = [];
 const idArray = [];
 
+const responseValidation = function (input) {
+    if (input === "") {
+        console.log("Please provide a valid response.");
+        return false;
+    }
+
+    return true;
+};
+
+const idValidation = function (input) {
+    if (idArray.includes(input)) {
+        console.log("That id is already being used. Please entered another id.");
+        return false;
+    }
+    return true;
+};
+
 function createManager () {
 
     inquirer.prompt ([
@@ -21,24 +38,28 @@ function createManager () {
             type: 'input',
             message: 'What is the name of the manager?',
             name: 'managerName',
+            validate: responseValidation,   
         },
     
         {
             type: 'input',
             message: 'What is the id for the manager?',
             name: 'managerId',
+            validate: responseValidation,   
         },
 
         {
             type: 'input',
             message: 'What is the email address for the manager?',
             name: 'managerEmail',
+            validate: responseValidation,   
         },
     
         {
             type: 'input',
             message: 'What is the office number for the manager?',
             name: 'managerOfficeNumber',
+            validate: responseValidation,   
         }
     ])
     .then((answers) => {
@@ -58,24 +79,28 @@ function addIntern () {
             type: 'input',
             message: 'What is the name of the intern?',
             name: 'internName',
+            validate: responseValidation,   
         },
     
         {
             type: 'input',
             message: 'What is the id for the intern?',
             name: 'internId',
+            validate: idValidation,
         },
 
         {
             type: 'input',
             message: 'What is the email address for the intern?',
             name: 'internEmail',
+            validate: responseValidation,   
         },
     
         {
             type: 'input',
             message: 'What is the name of the school the intern attends?',
             name: 'internSchool',
+            validate: responseValidation,   
         }
     ])
     .then((answers) => {
@@ -95,24 +120,28 @@ function addEngineer () {
             type: 'input',
             message: 'What is the name of the engineer?',
             name: 'engineerName',
+            validate: responseValidation,   
         },
     
         {
             type: 'input',
             message: 'What is the id for the engineer?',
             name: 'engineerId',
+            validate: idValidation,
         },
 
         {
             type: 'input',
             message: 'What is the email address for the engineer?',
             name: 'engineerEmail',
+            validate: responseValidation,   
         },
     
         {
             type: 'input',
             message: 'What is the GitHub username for the engineer?',
             name: 'engineerGithubUsername',
+            validate: responseValidation,   
         }
     ])
     .then((answers) => {
@@ -152,21 +181,8 @@ function createTeam () {
     })
 }
 
-// function to initialize program
-function init() {
-    inquirer.prompt(managerQuestions)
-    .then((response) => {
-        console.log(response)
-    });
-}
-
-// function call to initialize program
+// Function call to initialize program.
 createManager();
-// addIntern();
-// addEngineer();
-
-
-
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -181,12 +197,4 @@ createManager();
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
 
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
 
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
