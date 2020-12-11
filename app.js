@@ -83,6 +83,7 @@ function addIntern () {
 
         teamMembers.push(intern);
         idArray.push(answers.internId);
+        createTeam();
     })
 }
 
@@ -115,10 +116,11 @@ function addEngineer () {
         }
     ])
     .then((answers) => {
-        const engineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithubUsename);
+        const engineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithubUsername);
 
         teamMembers.push(engineer);
         idArray.push(answers.engineerId);
+        createTeam();
     })
 }
 
@@ -136,7 +138,17 @@ function createTeam () {
         }
     ])
     .then((answer) => {
-        console.log("I'm adding the following team member: " + answer.employeeType);
+        switch (answer.employeeType) {
+            case "Intern":
+                addIntern();
+                break;
+            case "Engineer":
+                addEngineer();
+                break;
+            case "I'm done adding team members.":
+                fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
+                break;
+        }
     })
 }
 
